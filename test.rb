@@ -29,18 +29,14 @@ end
 
 5.times do
   Thread.new do
-    loop do
-      ActiveRecord::Base.connection_pool.with_connection do
-        Customer.all.each do |customer|
-          invoice = customer.last_invoice
-          puts "Last invoice for customer #{customer.name} was at #{invoice.nil? ? "never" : invoice.created_at}"
-        end
+    ActiveRecord::Base.connection_pool.with_connection do
+      Customer.all.each do |customer|
+        invoice = customer.last_invoice
+        puts "Last invoice for customer #{customer.name} was at #{invoice.nil? ? "never" : invoice.created_at}"
       end
-      
-      sleep 5
     end
   end
 end
 
 puts "goes to sleep"
-sleep 60
+sleep 3
